@@ -1,6 +1,9 @@
 package bg.softuni.web.superMarket.commandLineRunner;
 
+import bg.softuni.web.superMarket.models.dtos.ShopAddDto;
+import bg.softuni.web.superMarket.models.dtos.TownAddDto;
 import bg.softuni.web.superMarket.services.CategoryService;
+import bg.softuni.web.superMarket.services.ShopService;
 import bg.softuni.web.superMarket.services.TownService;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +16,12 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
     private final BufferedReader bufferedReader;
     private final CategoryService categoryService;
     private final TownService townService;
+    private final ShopService shopService;
 
-    public CommandLineRunner(CategoryService categoryService, TownService townService) {
+    public CommandLineRunner(CategoryService categoryService, TownService townService, ShopService shopService) {
         this.categoryService = categoryService;
         this.townService = townService;
+        this.shopService = shopService;
         this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     }
 
@@ -38,6 +43,7 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
                     addTown();
                     break;
                 case "3":
+                    addShop();
                     break;
                 case "4":
                     break;
@@ -60,11 +66,19 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         }
     }
 
+    private void addShop() throws IOException {
+        System.out.println("Enter shop details in format: name address town");
+        String[] shopInfo = bufferedReader.readLine().split("\\s+");
+        String output = this.shopService.addShop(new ShopAddDto(shopInfo[0], shopInfo[1], new TownAddDto(shopInfo[2])));
+        System.out.println(output);
+
+    }
+
     private void addTown() throws IOException {
         System.out.println("Enter town name:");
         String town = bufferedReader.readLine();
 
-        System.out.println(this.townService.addTown(town));
+        System.out.println(this.townService.addTown(new TownAddDto(town)));
     }
 
     private void addCategory() throws IOException {

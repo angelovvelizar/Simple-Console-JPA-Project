@@ -13,7 +13,7 @@ public class Shop extends BaseEntity{
     @Column
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Town town;
 
     @OneToMany(mappedBy = "shop")

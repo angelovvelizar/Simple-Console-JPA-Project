@@ -21,15 +21,12 @@ public class TownServiceImpl implements TownService {
     }
 
     @Override
-    public String addTown(String townName) {
-        TownAddDto townAddDto = new TownAddDto();
-        townAddDto.setName(townName);
-
+    public String addTown(TownAddDto townAddDto) {
         if(!this.validator.isValidEntity(townAddDto)){
             return "Town name is not valid!";
         }
 
-        if(this.townRepository.findTownByName(townName).isPresent()){
+        if(this.townRepository.findTownByName(townAddDto.getName()).isPresent()){
             return "Town is already added!";
         }
 
