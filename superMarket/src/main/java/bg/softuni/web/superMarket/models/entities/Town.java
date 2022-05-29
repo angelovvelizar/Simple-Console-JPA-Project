@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "towns")
 public class Town extends BaseEntity{
 
-    @Column
+    @Column(unique = true,nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "town")
