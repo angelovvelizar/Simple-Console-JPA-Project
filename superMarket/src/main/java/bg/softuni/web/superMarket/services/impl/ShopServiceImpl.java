@@ -23,15 +23,15 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public String addShop(ShopAddDto shopAddDto) {
-        if(this.shopRepository.findShopByName(shopAddDto.getName()).isPresent()){
-            return "The shop is already added!";
-        }
-
-        if(!this.validator.isValidEntity(shopAddDto) || !this.validator.isValidEntity(shopAddDto.getTown())){
+        if (!this.validator.isValidEntity(shopAddDto) || !this.validator.isValidEntity(shopAddDto.getTown())) {
             return "Invalid shop!";
         }
 
-        Shop shop = this.modelMapper.map(shopAddDto,Shop.class);
+        if (this.shopRepository.findShopByNameAndAddress(shopAddDto.getName(),shopAddDto.getAddress()).isPresent()) {
+            return "The shop is already added!";
+        }
+
+        Shop shop = this.modelMapper.map(shopAddDto, Shop.class);
         this.shopRepository.save(shop);
 
 

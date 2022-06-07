@@ -1,8 +1,10 @@
 package bg.softuni.web.superMarket.commandLineRunner;
 
+import bg.softuni.web.superMarket.models.dtos.SellerAddDto;
 import bg.softuni.web.superMarket.models.dtos.ShopAddDto;
 import bg.softuni.web.superMarket.models.dtos.TownAddDto;
 import bg.softuni.web.superMarket.services.CategoryService;
+import bg.softuni.web.superMarket.services.SellerService;
 import bg.softuni.web.superMarket.services.ShopService;
 import bg.softuni.web.superMarket.services.TownService;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 
 @Component
 public class CommandLineRunner implements org.springframework.boot.CommandLineRunner {
@@ -17,11 +20,13 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
     private final CategoryService categoryService;
     private final TownService townService;
     private final ShopService shopService;
+    private final SellerService sellerService;
 
-    public CommandLineRunner(CategoryService categoryService, TownService townService, ShopService shopService) {
+    public CommandLineRunner(CategoryService categoryService, TownService townService, ShopService shopService, SellerService sellerService) {
         this.categoryService = categoryService;
         this.townService = townService;
         this.shopService = shopService;
+        this.sellerService = sellerService;
         this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     }
 
@@ -46,6 +51,7 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
                     addShop();
                     break;
                 case "4":
+                    addSeller();
                     break;
                 case "5":
                     break;
@@ -64,6 +70,19 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
                     break;
             }
         }
+    }
+
+    private void addSeller() throws IOException {
+        System.out.println("Enter seller details in format: firstName lastName age salary shopName");
+        String[] sellerInfo = bufferedReader.readLine().split("\\s+");
+        String output = this.sellerService.addSeller(new SellerAddDto(sellerInfo[0],
+                                                    sellerInfo[1],
+                                                    Integer.parseInt(sellerInfo[2]),
+                                                    new BigDecimal(sellerInfo[3]),
+                                                    sellerInfo[4]));
+        System.out.println(output);
+
+
     }
 
     private void addShop() throws IOException {

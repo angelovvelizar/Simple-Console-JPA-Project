@@ -2,11 +2,14 @@ package bg.softuni.web.superMarket.models.dtos;
 
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class ShopAddDto {
 
     @NotBlank
+    @Size(min = 2)
     private String name;
+    @Size(min = 2)
     private String address;
     private TownAddDto town;
 
