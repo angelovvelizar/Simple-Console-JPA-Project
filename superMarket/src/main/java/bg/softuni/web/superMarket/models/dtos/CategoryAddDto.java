@@ -7,6 +7,13 @@ public class CategoryAddDto {
     @Size(min = 2,message = "Name must be minimum two characters")
     private String name;
 
+    public CategoryAddDto() {
+    }
+
+    public CategoryAddDto(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
